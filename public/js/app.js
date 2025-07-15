@@ -1,47 +1,53 @@
 const appRoot = document.getElementById('app-root');
 
-function renderPage(path) 
-{
-    appRoot.innerHTML = ''; // Clean the actual content
-
-    if (path === '/' || path === '/home'){
-        appRoot.innerHTML = `<h1>Bienvenido a la página de Inicio</h1>
-        <p>Contenido de la Home.</p>
-        <a href="/about" class="nav-link">Acerca de Nosotros</a>`;
-        document.title = 'Inicio';
-    } 
-    else if (path === '/about'){
-        appRoot.innerHTML = `<h1>Acerca de Nosotros</h1>
-        <p>Aquí puedes saber más sobre nosotros.</p>`;
-        document.title = 'Sobre nosotros';
-    }
-    else if (path === '/contact'){
-        appRoot.innerHTML = `<h1>Contáctanos</h1>
-        <p>Envíanos un mensaje.</p>`;
-        document.title = 'Contacto';
-    }
-    else{
-        appRoot.innerHTML = `<h1 class="error center middle">404 - Página no encontrada</h1>
-        <p class="error center middle">Esta página no existe</p>
-        <a href="/home" class="error center middle">Vuelve al inicio</a>`;
-        document.title = 'ERROR 404';
+async function fetchTemplate(path) {
+    try {
+        const response = await fetch(path);
+        if (!response.ok) {
+            throw new Error(`No se encontró el template en la ruta: ${path}`);
+        }
+        return await response.text(); //Return the html content
+    } catch (error) {
+        console.error('Error al cargar el template:', error);
+        const response = await fetch('./templates/404.html');
+        return await response.text();
     }
 }
 
-function handleNavClick(event) 
-{
-    const targetLink = event.target.closest('a.nav-link');
+async function renderPage(path) {
+    let templatePath = '';
+    
+    // Load the template
+    if (path === '/' || path === '/home') {
+        templatePath = './templates/home.html';
+        document.title = 'Inicio';
+    }
+    else if (path === '/about-us' || path === '/about') {
+        templatePath = './templates/about-us.html';
+        document.title = 'Sobre nosotros';
+    }
+    else if (path === '/contact') {
+        templatePath = './templates/contact.html';
+        document.title = 'Contacto';
+    }
+    else {
+        templatePath = './templates/error-404.html';
+        document.title = 'ERROR 404';
+    }
+
+    appRoot.innerHTML = await fetchTemplate(templatePath);
+}
+
+async function handleNavClick(event) {
+    const targetLink = event.target.closest('a');
     
     if (targetLink) {
         event.preventDefault(); // Prevenir la recarga de la página
         const path = targetLink.getAttribute('href');
         
-        // Si la ruta no es la actual, actualiza la URL y renderiza
         if (window.location.pathname !== path) {
-            // Actualizar la URL en la barra del navegador
             window.history.pushState({}, '', path); 
-            // Renderizar la nueva página
-            renderPage(path);
+            await renderPage(path); // Esperamos a que la página se renderice
         }
     }
 }
