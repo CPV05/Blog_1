@@ -1,0 +1,14 @@
+# Dependencias de Node.js
+/node_modules
+
+# Archivos de entorno (contraseñas o claves de API)
+.env
+
+# Archivos de log
+logs
+*.log
+npm-debug.log*
+
+# Archivos del sistema operativo
+.DS_Store
+Thumbs.db

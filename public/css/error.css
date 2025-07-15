@@ -1,0 +1,17 @@
+@import url('https://fonts.googleapis.com/css2?family=Parastoo:wght@400..700&family=Rubik+Mono+One&display=swap');
+
+h1.error{
+    color: yellow;
+    font-family: 'Rubik Mono One', monospace;
+    font-size: 120px;
+}
+
+p.error{
+    color: white;
+    font-family: 'Parastoo', serif;
+    font-size: 12px;
+}
+
+a.error-link{
+    color: white;
+}
