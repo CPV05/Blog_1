@@ -9,3 +9,16 @@
 .left{
     text-align: left;
 }
+
+.middle{
+    vertical-align: middle;
+}
+
+.up{
+    vertical-align: top;
+}
+
+.down{
+    vertical-align: bottom;
+}
+
