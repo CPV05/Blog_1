@@ -1,21 +1,12 @@
-@import url('https://fonts.googleapis.com/css2?family=Parastoo:wght@400..700&family=Rubik+Mono+One&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Modak&display=swap');
 
-html{
-    background-color: #3e3e3e;
-}
-
-h1.error{
-    color: yellow;
-    font-family: 'Rubik Mono One', monospace;
-    font-size: clamp(24px, 5vw, 50px);
-}
-
-p.error{
-    color: white;
+.error{
     font-family: 'Parastoo', serif;
-    font-size: clamp(18px, 5vw, 37.5px);
+    text-align: center;
 }
 
-a.error{
-    color: black;
+h1.error, h2.error, h3.error{
+    font-family: "Modak", system-ui;
+    font-weight: 100;
 }
+

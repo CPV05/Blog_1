@@ -1,24 +1,50 @@
-.center{
+/* --- Utilities for text-align --- */
+.text-center {
     text-align: center;
 }
 
-.right{
+.text-right {
     text-align: right;
 }
 
-.left{
+.text-left {
     text-align: left;
 }
 
-.middle{
-    vertical-align: middle;
+
+/* --- Utilities for flexbox --- */
+.flex-container {
+    display: flex;
 }
 
-.up{
-    vertical-align: top;
+.justify-center {
+    justify-content: center; /* Centra horizontalmente */
 }
 
-.down{
-    vertical-align: bottom;
+.justify-right {
+    justify-content: flex-end; /* Alinea a la derecha */
 }
 
+.justify-left {
+    justify-content: flex-start; /* Alinea a la izquierda (comportamiento por defecto) */
+}
+
+/* --- Utilities for align-items --- */
+.align-middle {
+    align-items: center; /* Centra verticalmente */
+}
+
+.align-up {
+    align-items: flex-start; /* Alinea arriba */
+}
+
+.align-down {
+    align-items: flex-end; /* Alinea abajo */
+}
+
+/* --- Utilities for center-perfect --- */
+.center-perfect {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
