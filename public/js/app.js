@@ -1,15 +1,41 @@
 const appRoot = document.getElementById('app-root');
 
+// Register and Login scripts
+async function loadAndExecuteScript(templatePath) {
+    let scriptSrc;
+
+    if (templatePath.includes('register.html')) {
+        scriptSrc = './js/register.js';
+    }
+    else if (templatePath.includes('login.html')) {
+        scriptSrc = './js/login.js';
+    }
+
+    if (scriptSrc) {
+        const oldScript = document.getElementById('view-script');
+        if (oldScript) {
+            oldScript.remove();
+        }
+
+        const script = document.createElement('script');
+        script.id = 'view-script';
+        script.src = scriptSrc;
+        script.defer = true;
+        document.body.appendChild(script);
+    }
+}
+
 async function fetchTemplate(path) {
     try {
         const response = await fetch(path);
         if (!response.ok) {
             throw new Error(`No se encontró el template en la ruta: ${path}`);
         }
-        return await response.text(); //Return the html content
-    } catch (error) {
+        return await response.text();
+    }
+    catch (error) {
         console.error('Error al cargar el template:', error);
-        const response = await fetch('./templates/404.html');
+        const response = await fetch('/templates/error-404.html');
         return await response.text();
     }
 }
@@ -17,7 +43,6 @@ async function fetchTemplate(path) {
 async function renderPage(path) {
     let templatePath = '';
     
-    // Load the template
     if (path === '/' || path === '/home') {
         templatePath = './templates/home.html';
         document.title = 'Inicio';
@@ -30,33 +55,38 @@ async function renderPage(path) {
         templatePath = './templates/contact.html';
         document.title = 'Contacto';
     }
+    else if (path === '/register') {
+        templatePath = './templates/register.html';
+        document.title = 'Crear Cuenta';
+    }
+    else if (path === '/login') {
+        templatePath = './templates/login.html';
+        document.title = 'Iniciar Sesión';
+    }
     else {
         templatePath = './templates/error-404.html';
         document.title = 'ERROR 404';
     }
 
     appRoot.innerHTML = await fetchTemplate(templatePath);
+    
+    await loadAndExecuteScript(templatePath);
 }
 
 async function handleNavClick(event) {
     const targetLink = event.target.closest('a');
     
     if (targetLink) {
-        event.preventDefault(); // Prevenir la recarga de la página
+        event.preventDefault();
         const path = targetLink.getAttribute('href');
         
         if (window.location.pathname !== path) {
             window.history.pushState({}, '', path); 
-            await renderPage(path); // Esperamos a que la página se renderice
+            await renderPage(path);
         }
     }
 }
 
-// Add the event listener
 document.addEventListener('click', handleNavClick);
-
-// Listen the changes in the URL with the rows in the navegator
 window.addEventListener('popstate', () => { renderPage(window.location.pathname); });
-
-// Render the page
 document.addEventListener('DOMContentLoaded', () => { renderPage(window.location.pathname); });
