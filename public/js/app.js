@@ -63,6 +63,14 @@ async function renderPage(path) {
         templatePath = './templates/login.html';
         document.title = 'Iniciar Sesión';
     }
+    else if (path === '/terms-and-conditions') {
+        templatePath = './templates/terms-and-conditions.html';
+        document.title = 'Términos y Condiciones';
+    }
+    else if (path === '/privacy-policy') {
+        templatePath = './templates/privacy-policy.html';
+        document.title = 'Política de Privacidad';
+    }
     else {
         templatePath = './templates/error-404.html';
         document.title = 'ERROR 404';

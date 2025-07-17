@@ -31,7 +31,7 @@ app.use(express.static(path.join(__dirname, 'public')));
 const upload = multer({ dest: 'uploads/' });
 
 // Connect to MongoDB
-mongoose.connect('mongodb://localhost:27017/mi_base_de_datos')
+mongoose.connect('mongodb://localhost:27017/BD_BLOG')
     .then(() => console.log('✅ Conexión a MongoDB exitosa'))
     .catch(err => console.error('❌ Error de conexión a MongoDB:', err));
 

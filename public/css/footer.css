@@ -2,3 +2,7 @@ footer {
     text-align: center;
     width: 100%;
 }
+
+.terms-link, .privacy-link {
+    font-size: clamp(0.75rem, 0.8rem + 0.2vw, 1rem);
+}
