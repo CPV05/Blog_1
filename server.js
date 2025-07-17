@@ -42,7 +42,8 @@ const userSchema = new mongoose.Schema({
     password: { type: String, required: true },
     securityPin: { type: String, required: true },
     profilePicturePath: { type: String },
-    dateOfBirth: { type: Date, required: true }
+    dateOfBirth: { type: Date, required: true },
+    acceptsPublicity: { type: Boolean, default: false }
 });
 const User = mongoose.model('User', userSchema);
 
@@ -111,7 +112,8 @@ app.post('/register', upload.single('profilePicture'), async (req, res) => {
             email,
             password: hashedPassword,
             securityPin,
-            dateOfBirth
+            dateOfBirth,
+            acceptsPublicity: !!acceptPublicity
         });
         await newUser.save();
 

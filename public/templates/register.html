@@ -12,16 +12,23 @@
         <input type="file" name="profilePicture" accept="image/png, image/jpeg" required>
         <br>
         <button type="submit">Registrar</button>
-
+        
         <div class="form-group terms-group">
-        <input type="checkbox" id="terms" name="acceptTermsandConditions" required>
-        <label for="terms">
-            He leído y acepto los 
-            <a href="/terms-and-conditions" target="_blank" rel="noopener noreferrer">Términos y Condiciones</a> 
-            y la 
-            <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">Política de Privacidad</a>.
-        </label>
-    </div>
+            <input type="checkbox" id="publicity" name="acceptPublicity">
+            <label for="publicity">
+                Acepto recibir correos con novedades, promociones e información.
+            </label>
+        </div>
+        
+        <div class="form-group terms-group">
+            <input type="checkbox" id="terms" name="acceptTermsandConditions" required>
+            <label for="terms">
+                He leído y acepto los 
+                <a href="/terms-and-conditions" target="_blank" rel="noopener noreferrer">Términos y Condiciones</a> 
+                y la 
+                <a href="/privacy-policy" target="_blank" rel="noopener noreferrer">Política de Privacidad</a>.
+            </label>
+        </div>
     </form>
     <div id="message"></div>
 </section>
