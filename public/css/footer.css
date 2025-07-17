@@ -4,5 +4,5 @@ footer {
 }
 
 .terms-link, .privacy-link {
-    font-size: clamp(0.75rem, 0.8rem + 0.2vw, 1rem);
+    font-size: clamp(8px, 0.85rem, 12px);
 }
