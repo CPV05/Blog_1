@@ -31,22 +31,6 @@ app.set('trust proxy', 1);
 //  MIDDLEWARE
 // =================================================================
 
-// Security (Rate Limiters)
-const DoSLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000,
-    max: 100,
-    message: 'Demasiadas peticiones enviadas.'
-});
-
-const burstLimiter = rateLimit({
-    windowMs: 5 * 1000,
-    max: 15,
-    message: 'Has enviado demasiadas peticiones en un corto periodo. Por favor, espera unos segundos.',
-});
-
-app.use(DoSLimiter);
-app.use(burstLimiter);
-
 // Body parser
 app.use(express.json());
 app.use('/uploads', express.static(path.join(__dirname, 'uploads')));
@@ -63,6 +47,26 @@ app.use(session({
 
 // Frontend
 app.use(express.static(path.join(__dirname, 'public')));
+
+// Security (Rate Limiters)
+const DoSLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 200,
+    message: 'Demasiadas peticiones enviadas, se ha detectado un posible ataque. Por favor, espera unos minutos.',
+    standardHeaders: true,
+    legacyHeaders: false
+});
+
+// Rate Limiter
+const sensitiveRouteLimiter = rateLimit({
+    windowMs: 5 * 60 * 1000,
+    max: 10,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: 'Demasiadas peticiones a esta ruta, por favor intente de nuevo más tarde.'
+});
+
+app.use(DoSLimiter);
 
 
 // =================================================================
@@ -96,21 +100,13 @@ const upload = multer({
   }
 });
 
-const apiLimiter = rateLimit({
-    windowMs: 2 * 1000,
-    max: 3,
-    standardHeaders: true,
-    legacyHeaders: false,
-    message: 'Demasiadas peticiones a esta ruta, por favor intente de nuevo en unos segundos.'
-});
-
 
 // =================================================================
 //  ROUTES
 // =================================================================
 
 // Route to login a user
-app.post('/login', apiLimiter, async (req, res) => {
+app.post('/login', sensitiveRouteLimiter, async (req, res) => {
     try {
         const { loginIdentifier, password } = req.body;
 
@@ -142,7 +138,7 @@ app.post('/login', apiLimiter, async (req, res) => {
 });
 
 // Route to register a new user
-app.post('/register', apiLimiter, (req, res) => {
+app.post('/register', sensitiveRouteLimiter, (req, res) => {
     upload.single('profilePicture')(req, res, async (err) => {
         if (err instanceof multer.MulterError) {
             if (err.code === 'LIMIT_FILE_SIZE') {

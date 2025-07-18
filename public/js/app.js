@@ -2,27 +2,39 @@ const appRoot = document.getElementById('app-root');
 
 // Register and Login scripts
 async function loadAndExecuteScript(templatePath) {
-    let scriptSrc;
+    const oldScript = document.getElementById('view-script');
+    if (oldScript) {
+        oldScript.remove();
+    }
 
+    let scriptSrc;
+    let initFunction;
+    
     if (templatePath.includes('register.html')) {
         scriptSrc = './js/register.js';
+        initFunction = window.initRegisterForm;
     }
     else if (templatePath.includes('login.html')) {
         scriptSrc = './js/login.js';
+        initFunction = window.initLoginForm;
     }
 
-    if (scriptSrc) {
-        const oldScript = document.getElementById('view-script');
-        if (oldScript) {
-            oldScript.remove();
+    if (!scriptSrc) return;
+
+    const script = document.createElement('script');
+    script.id = 'view-script';
+    script.src = scriptSrc;
+    
+    script.onload = () => {
+        if (templatePath.includes('register.html')) {
+            initRegisterForm();
         }
-
-        const script = document.createElement('script');
-        script.id = 'view-script';
-        script.src = scriptSrc;
-        script.defer = true;
-        document.body.appendChild(script);
-    }
+        else if (templatePath.includes('login.html')) {
+            initLoginForm();
+        }
+    };
+    
+    document.body.appendChild(script);
 }
 
 async function fetchTemplate(path) {

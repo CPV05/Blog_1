@@ -1,79 +1,47 @@
-const registerForm = document.getElementById('registerForm');
-const messageDiv = registerForm.querySelector('#message');
-const submitButton = registerForm.querySelector('button[type="submit"]');
+function initRegisterForm() {
+    const registerForm = document.getElementById('registerForm');
 
-registerForm.addEventListener('submit', async (event) => {
-    event.preventDefault();
+    if (!registerForm) return;
+    const messageDiv = registerForm.querySelector('#message');
+    const submitButton = registerForm.querySelector('button[type="submit"]');
 
-    submitButton.disabled = true;
-    messageDiv.textContent = '';
-    messageDiv.className = '';
+    registerForm.addEventListener('submit', async (event) => {
+        event.preventDefault();
 
-    const formData = new FormData(registerForm);
+        submitButton.disabled = true;
+        messageDiv.textContent = '';
+        messageDiv.className = '';
 
-    try {
-        const response = await fetch('/register', {
-            method: 'POST',
-            body: formData
-        });
+        const formData = new FormData(registerForm);
 
-        const result = await response.json();
+        try {
+            const response = await fetch('/register', {
+                method: 'POST',
+                body: formData
+            });
 
-        if (response.ok) {
-            messageDiv.className = 'message-success';
-            messageDiv.textContent = result.message + ' Serás redirigido...';
-            
-            setTimeout(() => {
-                window.history.pushState({}, '', '/login');
-                window.dispatchEvent(new PopStateEvent('popstate'));
-            }, 2000);
-        } 
-        else {
+            const result = await response.json();
+
+            if (response.ok) {
+                messageDiv.className = 'message-success';
+                messageDiv.textContent = result.message + ' Serás redirigido...';
+                
+                setTimeout(() => {
+                    window.history.pushState({}, '', '/login');
+                    window.dispatchEvent(new PopStateEvent('popstate'));
+                }, 2000);
+            } 
+            else {
+                messageDiv.className = 'message-error';
+                messageDiv.textContent = result.message;
+                submitButton.disabled = false;
+            }
+        }
+        catch (error) {
+            console.error('Error de fetch:', error);
             messageDiv.className = 'message-error';
-            messageDiv.textContent = result.message;
+            messageDiv.textContent = 'Error de conexión. Inténtalo de nuevo.';
             submitButton.disabled = false;
         }
-    }
-    catch (error) {
-        console.error('Error de fetch:', error);
-        messageDiv.className = 'message-error';
-        messageDiv.textContent = 'Error de conexión. Inténtalo de nuevo.';
-        submitButton.disabled = false;
-    }
-});
-
-
-/*document.getElementById('registerForm').addEventListener('submit', async (event) => {
-    event.preventDefault(); // Evita que el formulario se envíe de la forma tradicional
-
-    const form = event.target;
-    const messageDiv = document.getElementById('message');
-    
-    const formData = new FormData(form);
-
-    try {
-        const response = await fetch('/register', {
-            method: 'POST',
-            body: formData
-        });
-
-        const result = await response.json();
-
-        if (response.ok) {
-            messageDiv.className = 'message-success';
-            messageDiv.textContent = result.message;
-            setTimeout(() => {
-                window.history.pushState({}, '', '/login');
-                window.dispatchEvent(new PopStateEvent('popstate'));
-            }, 2000);
-        }
-        else {
-            messageDiv.className = 'message-error'
-            messageDiv.textContent = result.message;
-        }
-    }
-    catch (error) {
-        messageDiv.className = 'message-error'
-        messageDiv.textContent = result.message;
-    }
-});*/
+    });
+}
