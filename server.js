@@ -163,7 +163,13 @@ app.post('/register', apiLimiter, (req, res) => {
                 if (tempFile) fs.unlinkSync(tempFile.path);
                 return res.status(400).json({ message: 'Faltan campos por rellenar.' });
             }
-
+            
+            //Username validation
+            if (username.length < 3) {
+                if (tempFile) fs.unlinkSync(tempFile.path);
+                return res.status(400).json({ message: 'El nombre de usuario debe tener al menos 3 caracteres.' });
+            }
+            
             //Email validation
             if (email !== confirmEmail) {
                 if (tempFile) fs.unlinkSync(tempFile.path);
@@ -171,11 +177,15 @@ app.post('/register', apiLimiter, (req, res) => {
             }
 
             //Password validation
-            if (password !== confirmPassword) {
+            if (password.length < 6) {
+                if (tempFile) fs.unlinkSync(tempFile.path);
+                return res.status(400).json({ message: 'La contraseña debe tener al menos 6 caracteres.' });
+            }
+            else if (password !== confirmPassword) {
                 if (tempFile) fs.unlinkSync(tempFile.path);
                 return res.status(400).json({ message: 'Las contraseñas no coinciden.' });
             }
-            
+
             const salt = await bcrypt.genSalt(10);
             const hashedPassword = await bcrypt.hash(password, salt);
             
