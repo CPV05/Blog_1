@@ -42,6 +42,8 @@ button {
     font-size: 1em;
 }
 
+small { color: var(--color-texto-secundario); }
+
 /* Icons Sun and Moon */
 #theme-toggle {
     margin-left: auto;

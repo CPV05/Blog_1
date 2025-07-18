@@ -49,6 +49,11 @@ p {
   margin-right: 1%;
 }
 
+small {
+  font-size: 0.7em;
+  font-style: italic; 
+}
+
 /*==============================================*/
 
 .text-small {  font-size: clamp(13.13px, 0.8rem + 0.25vw, 14px);}
