@@ -164,26 +164,36 @@ app.post('/register', apiLimiter, (req, res) => {
                 return res.status(400).json({ message: 'Faltan campos por rellenar.' });
             }
             
-            //Username validation
+            // Username validation
             if (username.length < 3) {
                 if (tempFile) fs.unlinkSync(tempFile.path);
                 return res.status(400).json({ message: 'El nombre de usuario debe tener al menos 3 caracteres.' });
             }
             
-            //Email validation
+            // Email validation
             if (email !== confirmEmail) {
                 if (tempFile) fs.unlinkSync(tempFile.path);
                 return res.status(400).json({ message: 'Los emails no coinciden.' });
             }
 
-            //Password validation
+            // Password validation
             if (password.length < 6) {
                 if (tempFile) fs.unlinkSync(tempFile.path);
                 return res.status(400).json({ message: 'La contraseña debe tener al menos 6 caracteres.' });
             }
-            else if (password !== confirmPassword) {
+            if (password !== confirmPassword) {
                 if (tempFile) fs.unlinkSync(tempFile.path);
                 return res.status(400).json({ message: 'Las contraseñas no coinciden.' });
+            }
+
+            // Birthdate validation
+            const birthDate = new Date(dateOfBirth);
+            const minDate = new Date('1900-01-01');
+            const now = new Date();
+            now.setHours(0, 0, 0, 0);
+            if (isNaN(birthDate.getTime()) || birthDate > now || birthDate < minDate) {
+                if (tempFile) fs.unlinkSync(tempFile.path);
+                return res.status(400).json({ message: 'La fecha de nacimiento proporcionada no es válida.' });
             }
 
             const salt = await bcrypt.genSalt(10);
