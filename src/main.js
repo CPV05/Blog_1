@@ -71,6 +71,10 @@ async function renderPage(path) {
         templatePath = './templates/register.html';
         document.title = 'Crear Cuenta';
     }
+    else if (path === '/register-success') {
+        templatePath = './templates/register-success.html';
+        document.title = 'Registro Exitoso';
+    }
     else if (path === '/login') {
         templatePath = './templates/login.html';
         document.title = 'Iniciar Sesión';
@@ -90,6 +94,16 @@ async function renderPage(path) {
 
     appRoot.innerHTML = await fetchTemplate(templatePath);
     
+    if (path === '/register-success') {
+        const pin = sessionStorage.getItem('registrationPin');
+        const pinDisplayElement = document.getElementById('recovery-pin-display');
+
+        if (pin && pinDisplayElement) {
+            pinDisplayElement.textContent = pin;
+
+            sessionStorage.removeItem('registrationPin'); // Clear the session storage
+        }
+    }
     await loadAndExecuteScript(templatePath);
 }
 
