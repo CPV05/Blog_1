@@ -231,7 +231,7 @@ app.post('/register', sensitiveRouteLimiter, (req, res) => {
             }
             
             //Name
-            const nameRegex = /^[\p{L}\s]+$/u/;
+            const nameRegex = /^[\p{L}\s]+$/u;
             if (!nameRegex.test(firstName)) {
                 if (tempFile) fs.unlinkSync(tempFile.path);
                 return res.status(400).json({ errors: { firstName: 'El nombre solo puede contener letras y espacios.' } });
