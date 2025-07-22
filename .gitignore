@@ -13,5 +13,5 @@ npm-debug.log*
 .DS_Store
 Thumbs.db
 
-# Fotos de perfil de usuarios
+# User photos
 /uploads
