@@ -369,6 +369,18 @@ app.post('/logout', (req, res) => {
 //  CATCH-ALL AND START SERVER
 // =================================================================
 
+// Directory 'uploads' init
+const uploadsDir = path.join(__dirname, 'uploads');
+if (!fs.existsSync(uploadsDir)) {
+    try {
+        fs.mkdirSync(uploadsDir, { recursive: true });
+        console.log(`✅ Directorio 'uploads' creado correctamente.`);
+    }
+    catch (error) {
+        console.error(`❌ Error al crear el directorio 'uploads':`);
+    }
+}
+
 // Catch-all route
 app.get('*', (req, res) => { res.sendFile(path.join(__dirname, 'public', 'index.html')); });
 
